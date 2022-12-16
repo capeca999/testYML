@@ -1,0 +1,448 @@
+# Spring MVC dispatcher servlet path. Needs to be different than CXF's to enable/disable Actuator endpoints access (/info, /health, ...)
+
+server.max-http-header-size: 32000
+server:
+  servlet:
+    contextPath: /gestion-socios-api
+  port: 8080
+  forward-headers-strategy: native
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-exception: false
+springfox:
+  documentation:
+    swagger:
+      v2.path: /api-docs
+      use-model-v3: false
+
+
+###########################
+### Spring boot config  ###
+###########################
+management:
+  security:
+    enabled: false
+  health:
+    rabbit:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: null
+
+#########################
+### Application Info  ###
+#########################
+info.app:
+  name: gestion-socios-api
+  description: 'Aplicación gestion-socios-api'
+  id: 981
+# KEEP under application repository to allow pom attribute replacement
+#  version: ${project.version}
+#  maven.site.url: ${tools.repository.site.url}
+
+##############################
+### Autentication Settings ###
+##############################
+test.infra-ws:
+    security:
+      enabled: true
+      oauth2:
+        resource:
+          clientId: INSDR_APP
+          accessTokenUri: 
+          scope: insider
+          clientSecret: e268f247221548899d696d63c9112e8b
+    mapper:
+      serialization:
+        ignoreNull: false
+        namingStrategy: LOWER_CAMEL_CASE
+    swagger-api:
+      security: #Only valid when infra-ws.security is enabled
+        client-id: WEB_APP
+        client-secret: 5fd91a85762f4a7fb5ee3fc8fb648e1a
+        access-token-uri: 
+      docs:
+        basePath: /
+        title: 'API pública de la aplicación gestion-socios-api'
+        description: 'API pública de los servicios expuestos por la aplicación  gestion-socios-api'
+        enabled: true
+# KEEP under application repository to allow pom attribute replacement
+#        version: ${project.version}
+        prettyPrint: true
+        enableCodeGeneration: true
+        contact:
+          name: null
+          url: null
+          email: null
+        license: null
+        licenseUrl: null
+        termsOfServiceUrl: null
+# KEEP under application repository to allow pom attribute replacement
+# ModuleInfo endpoint Properties
+#    monitoring:
+#      module:
+#        name: ${project.name}
+#        version: ${project.version}
+#        maven.site.url: ${tools.repository.site.url}
+
+#########################################################################
+######################### TODO ##########################################
+## BORRAR LA CONFIGURACION DE PGM CUANDO SE CAMBIE UTILITES ###
+#########################################################################
+    pgm:
+      jobd-util:
+#####################################
+### API Config                    ###
+#####################################
+test.common-utils:
+    internationalization:
+      declaredLocales: es, es_ES, en, en_US
+      localeSeparator: '_'
+test.infra-data:
+    auditory:
+      enabled: true
+    filter:
+      like:
+        escape-character: "!"
+        characters-to-escape: "_"
+      separator:
+        value: ","
+test.domain-utils:
+    pagination:
+      defaultPaginationPage: 0
+      defaultPaginationSize: 10
+test:
+  infra-ws-utils:
+    export:
+      excel:
+        position:
+          title: C1
+          subtitle: C2
+          date: L1
+          time: L2
+          user: L3
+          rows: A7
+        template:
+          path: /var/plantillas/SocioC
+          name: pExport_GenericoV2.xlsx
+          resource: true
+  testing:
+    oauth2:
+      client-id: WEB_APP
+      client-secret: 5fd91a85762f4a7fb5ee3fc8fb648e1a
+      username: test_area_scl
+      password: test_scl
+
+test.oauth2.resource:
+  max-page-size: 2000
+  notification:
+    send-push: true
+    send-email: false
+
+#####################################
+### Custom application properties ###
+#####################################
+test.gestion-socios-api:
+  app-id: 981
+  cc-mail-list:
+  emas-mail: mailbot.keops@auto.test.es
+  mdm-user: 
+  entorno: 
+  idMdm-enabled: false
+  mdm-enabled: false
+  iam-enabled: false
+  granted-roles:
+    actividades:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    aportacion:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    calendario-consejo-rector: 
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    cheques-emitidos:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    consulta-acciones-marketing:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    consulta-devoluciones:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    control-cambios:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    desvinculacion-socio:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    detalle-remesa-prs:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    ejecucion-listado-codigo:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    historico-extravio-tarjetas:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    historico-peticiones:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    historico-socios:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    iam:
+      read: GSOC_API_EDICION
+      write: GSOC_API_EDICION
+    importe-alta:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    consulta-mc: ROLE_SOCIO_EDICION, ROLE_INSIDER
+    mdm-api-role:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    motivo-reestampacion-tarjeta:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    numero-devoluciones:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    ofertas-tpv:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    reestampar-tarjeta:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    replicar-socio:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    socio-actividad:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    mantenimiento-socio-cliente:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER, GCALLE_API_CONSULTA, GCALLE_API_EDICION, GSOL_API_CONSULTA, GSOL_API_EDICION, GSOC_API_CONSULTA_AJSC   
+      write: GSOC_API_EDICION, ROLE_INSIDER, GSOL_API_EDICION
+    socios-baja-alta:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    socios-batch:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    socios-plex:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjeta-pago:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-emitidas:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-espera:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-id-europea:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    tipos-de-baja:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tipos-de-alta:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tipos de devolucion:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tipos-de-socios: 
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tipo-tarjeta:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    trazabilidad-restriccion-canales:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    vinculacion-socios:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    web-app:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    consulta-socio-bbva:
+      read: ROLE_SOCIO_CONSULTA
+    tiendas-habituales-compra:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    compras-socios:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    detalle-oferta-diferida:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER, PRECIOS_CONSULTA_VTA, DETALLE_TICKET_DWH 
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    control-revistas-emitidas:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    fichero-franqueo-revista:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tipologia-uf:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    operaciones-acumulados-compra:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    devolucion-revista:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    devolucion-revista-tipo-envio:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    socios-sin-tilde:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    procesos-tarjetas-batch:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-caducadas:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-caducadas-unoe:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-huerfanas:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    tarjetas-emitidas-banco:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    anyadir-tarjetas-emitir:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    oferta-diferida:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER
+    socio-consejo-rector:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    tickets-compra:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+      write: GSOC_API_EDICION, ROLE_INSIDER      
+    historico-redencion-cheques:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    listado-socios-recibir-revista:
+      read: GSOC_API_CONSULTA, GSOC_API_EDICION, ROLE_INSIDER
+    pase-socios-dwh:
+      write: GSOC_API_EDICION, ROLE_INSIDER
+  aplicaciones-mdm:
+    - codigo: SOCIAL
+    - codigo: WEBtest
+    - codigo: Mtest
+    - codigo: CRM
+    - codigo: TOL
+  tipos-centro:
+    - codigo: T
+      descripcion: Tienda
+    - codigo: C
+      descripcion: Central
+    - codigo: D
+      descripcion: Dpto
+  canales-mdm:
+    - codigo: 1
+    - codigo: 2
+    - codigo: 3
+    - codigo: 4
+    - codigo: 5
+    - codigo: 7
+
+#####################################
+### Logging properties            ###
+#####################################
+logging:
+  test:
+    httpRequest: true 
+  config: ${LOGGING_CONFIG_LOCATION:/opt/config}/logback-spring.xml
+  file:
+    path: /var/tmp/log/test/gestion-socios-api/
+  level:
+    root: INFO
+    es.test.backend.infrastructure.ws.utils.rest.LoggerHttpRequestInterceptor: ERROR
+  pattern:
+    console: '[%highlight(%-5level)][%d{yyyy-MM-dd HH:mm:ss.SSS}][%marker] %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan}: %m%n%wEx'
+    file: '[%-5level] [%d{HH:mm:ss.SSS}] [%marker] [%thread] %logger{36} - %m%n%wEx'
+#########################
+### Database Settings ###
+#########################
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: gestion-socios-api
+  boot:
+    admin:
+      auto-deregistration: true
+      client:
+        enabled: true
+        url: 
+        instance:
+          service-base-url: 
+          management-base-url: 
+  sleuth:
+    baggage-keys:
+      - x-correlation-id
+    propagation-keys:
+      - x-correlation-id
+    log.slf4j.whitelisted-mdc-keys:
+      - x-correlation-id
+  datasource:
+    hikari:
+      connection-test-query:  values 1
+      connectionTimeout: 60000
+      idleTimeout: 300000
+      minimumIdle: 2
+      maximumPoolSize: 100
+      maxLifetime: 900000
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.DB2400Dialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        jdbc:
+          time_zone: UTC
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+    base.package: es.test.backend.gestionsociosapi.infrastructure.repository
+  entity:
+    base.package: es.test.backend.gestionsociosapi.domain.model
+  liquibase:
+    enabled: false
+    
+##########################
+### test WS Settings ###
+##########################
+test.services-api:
+    notification-api:
+      base-path:
+    notificaciones-api:
+      base-path:
+    maestros-sc-api:
+      base-path: 
+    mdm-scl-api:
+      base-path:
+    gestion-solicitudes-api:
+      base-path:
+    gestion-callejero-api:
+      base-path:
+    maestros-sintesis-api:
+      base-path: 
+    precios-api:
+      base-path: 
+    ofertas-api:
+      base-path: 
+    detalle-ticket-api: 
+      base-path:  
+    oferta-cross-selling-api:
+      base-path:  
+      
+#########################################################################
+######################### TODO ##########################################
+## BORRAR LA CONFIGURACION DE COBOLO CALLER CUANDO SE CAMBIE UTILITES ###
+#########################################################################
+
+
+####################
+### COBOL CALLER ###
+####################
+test.cobol-runner-service: 
+  # Platform connection config
+  platforms:
+  # testT1
+    'FDSCL000P': 
+      host: 
+      username: 
+      password: 
+      jobd: 
